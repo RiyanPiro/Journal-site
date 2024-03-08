@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journal</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+    <div class="container">
+        <div class="book">
+            <div class="date">
+                Date:
+                <input readonly type="text" id="date-field">
+            </div>
+            <div class="punchholes">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <div class="notes">
+            <textarea name="text" id="my-text-area" cols="33" rows="19" maxlength="759"></textarea>
+            </div>
+
+            <input readonly id="page-number" type="text">
+        </div>
+        <div class="flipbtn">
+            <button id="flip-left">
+                <div id="left-arrow"></div>
+            </button>
+            <button id="flip-right">
+                <div id="right-arrow"></div>
+            </button>
+        </div>
+        <div class="delbtn">
+            <button id="del-page"></button>
+            <button id="del-empty"></button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
