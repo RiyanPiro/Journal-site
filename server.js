@@ -113,4 +113,44 @@ app.post('/deleteEmpty', async (req, res) => {
   }
 });
 
+// Search for a page by date
+app.post('/searchByDate', async (req, res) => {
+  try {
+    await client.connect();
+    const db = client.db(dbName);
+
+    let pages = await db.collection('pages').find({ date: req.body.date }).toArray();
+    if (pages.length > 0) {
+      let pageNumbers = pages.map(page => page.pageNumber);
+      res.status(200).json(pageNumbers);
+    } else {
+      res.status(404).send('No pages found');
+    }
+  }
+  catch (err) {
+    console.log(err.stack);
+    res.status(500).send('Error searching for page');
+  }
+});
+
+// Search for a page by text content
+app.post('/searchByText', async (req, res) => {
+  try {
+    await client.connect();
+    const db = client.db(dbName);
+
+    let pages = await db.collection('pages').find({ content: { $regex: req.body.content, $options: 'i' } }).toArray();
+    if (pages.length > 0) {
+      let pageNumbers = pages.map(page => page.pageNumber);
+      res.status(200).json(pageNumbers);
+    } else {
+      res.status(404).send('No pages found');
+    }
+  }
+  catch (err) {
+    console.log(err.stack);
+    res.status(500).send('Error searching for page');
+  }
+});
+
 app.listen(3000, () => console.log('Server is running on http://localhost:3000'));

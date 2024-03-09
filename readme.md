@@ -2,10 +2,10 @@
 
 ## 🚀 Features
 - Saves content to the database in realtime as you type
-- Opens to the latest page
+- Search for Page by page number, date or text
 - Left and Right buttons to navigate through pages
 - Delete button to delete the current page
-- Delete empty pages
+- Delete empty pages button
 
 ## ⚠️ Steps of Usage
 1. Install node.js
@@ -18,7 +18,3 @@
 8. Open http://localhost:3000/
 
 ![Demo](demo.gif)
-
-## 💥 To be added
-- Find page by pageNumber/date/content
-- Animation for page flip

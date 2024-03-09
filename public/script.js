@@ -10,8 +10,7 @@ function getNewDate(){
 
 // If textarea is not focused, flip pages using arrow keys
 window.addEventListener('keydown', (e) => {
-    const myTextArea = document.getElementById('my-text-area');
-    if (!myTextArea.contains(document.activeElement)) {
+    if (!document.activeElement.tagName.toLowerCase().match(/^(textarea|input)$/)) {
         switch (e.key) {
             case "ArrowLeft":
                 flipLeftBtn.click();
@@ -139,7 +138,7 @@ document.getElementById('del-page').addEventListener('click', () => {
 
 // Delete all empty pages
 document.getElementById('del-empty').addEventListener('click', () => {
-    if (confirm("Delete empty pages?")) {
+    if (confirm("Delete all empty pages?")) {
         fetch('/deleteEmpty', {
             method: 'POST',
             headers: {
@@ -160,4 +159,75 @@ document.getElementById('del-empty').addEventListener('click', () => {
         })
         .catch(err => console.error(err));
     }
+});
+
+// Search for a page
+document.getElementById('search-page').parentElement.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const inputPageValue = document.getElementById('search-page').value;
+    const pageNumber = parseInt(inputPageValue);
+
+    if (!isNaN(pageNumber)) {
+        currentPageNumber = pageNumber;
+        document.getElementById('page-number').value = currentPageNumber;
+        await displayPage(currentPageNumber);
+    } else {
+        document.getElementById('search-result').value = "Invalid page number";
+    }
+});
+
+// Search for a pagenumber by date
+document.getElementById('search-date').parentElement.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    const inputDateValue = document.getElementById('search-date').value;
+
+    fetch('/searchByDate', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ date: inputDateValue }),
+    })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('No pages found for the date');
+            }
+        })
+        .then(data => {
+            document.getElementById('search-result').value = `Pages numbers found for the date: ` + JSON.stringify(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('search-result').value = error.message;
+        });
+});
+
+// Search for a pagenumber by text content
+document.getElementById('search-text').parentElement.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    const inputContentValue = document.getElementById('search-text').value;
+
+    fetch('/searchByText', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ content: inputContentValue }),
+    })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('No pages found for the text');
+            }
+        })
+        .then(data => {
+            document.getElementById('search-result').value = `Pages numbers found for the text: ` + JSON.stringify(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('search-result').value = error.message;
+        });
 });
